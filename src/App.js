@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from 'react';
+import Pregunta from './componentes/Pregunta';
+import Formulario from './componentes/Formulario';
+import Listado from './componentes/Listado';
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	// Definir el state
+
+	const [presupuesto, guardarPresupuesto] = useState(0); //Valor inicial a 0
+	const [restante, guardarRestante] = useState(0); //Valor inicial a 0
+	const [mostrarPregunta, actualizarPregunta] = useState(true); //Valor inicial a true
+	const [gastos, guardarGastos] = useState([]);
+	// Cuando agrege un nuevo gasto
+	const agregarNuevoGasto = (gasto) => {
+		guardarGastos([...gastos, gasto]);
+	};
+	return (
+		<div className='container'>
+			<header>
+				<h1>Gasto semanal</h1>
+				<div className='contenido-principal contenido'>
+					{/* carga condicional de un componente */}
+					{mostrarPregunta ? (
+						<Pregunta
+							guardarPresupuesto={guardarPresupuesto}
+							guardarRestante={guardarRestante}
+							actualizarPregunta={actualizarPregunta}
+						/>
+					) : (
+						<div className='row'>
+							<div className='one-half column'>
+								<Formulario agregarNuevoGasto={agregarNuevoGasto} />
+							</div>
+							<div className='one-half column'>
+								<Listado gastos={gastos} />
+							</div>
+						</div>
+					)}
+				</div>
+			</header>
+		</div>
+	);
 }
 
 export default App;
